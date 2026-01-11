@@ -24,7 +24,7 @@ services:
       - REDIS_HOST=redis_container
       - REDIS_PORT=6379
       - LOG_LEVEL=INFO
-      - AUTO_RELOAD=False
+      - AUTO_RELOAD=True
     volumes:
       - ./app:/app/app
       - ./database.db:/app/database.db

@@ -2,16 +2,22 @@
 Books router for v1.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
 from app.core.database import SessionDep
 from app.core.hooks import registry
+
+from app.common.rate_limiter import (
+    rate_limiter_low_lvl,
+    rate_limiter_medium_lvl # ,
+    # rate_limiter_high_lvl
+)
 
 
 router = APIRouter(prefix="/books", tags=["Books"])
 
 
-@router.get("", summary="Get all books")
+@router.get("", summary="Get all books", dependencies=[Depends(rate_limiter_low_lvl)])
 async def get_books(session: SessionDep):
     """Get all books."""
 
@@ -21,7 +27,7 @@ async def get_books(session: SessionDep):
     return books
 
 
-@router.get("/{book_id}", summary="Get book by ID")
+@router.get("/{book_id}", summary="Get book by ID", dependencies=[Depends(rate_limiter_low_lvl)])
 async def get_book(book_id: int, session: SessionDep):
     """Get book by ID."""
 
@@ -34,7 +40,7 @@ async def get_book(book_id: int, session: SessionDep):
     return book
 
 
-@router.post("", summary="Create book")
+@router.post("", summary="Create book", dependencies=[Depends(rate_limiter_medium_lvl)])
 async def create_book(session: SessionDep, title: str, author: str):
     """Create a new book."""
 
