@@ -21,6 +21,10 @@ class Settings(BaseSettings):
     # Database settings
     database_url: str = "sqlite+aiosqlite:///database.db"
 
+    # Redis settings
+    redis_host: str = "localhost"
+    redis_port: int = 6379
+
     # Logging
     log_level: str = "DEBUG"
 
