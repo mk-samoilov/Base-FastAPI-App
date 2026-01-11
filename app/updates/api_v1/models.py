@@ -1,5 +1,5 @@
 """
-SQLAlchemy models for v1.
+SQLAlchemy models for api_v1.
 """
 
 from sqlalchemy.orm import Mapped, mapped_column

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}About - {{ settings.app_title }}{% endblock %}
+
+{% block content %}
+<div class="about-section">
+    <h1>About This Project</h1>
+
+    <div class="about-content">
+        <h2>Architecture</h2>
+        <p>
+            This is a <strong>plugin-based FastAPI application</strong> that uses a hooks system (via <code>pluggy</code>)
+            to modularly load features as "updates". The architecture allows new functionality to override or extend
+            existing functionality using a priority-based system.
+        </p>
+
+        <h2>Key Features</h2>
+        <ul>
+            <li><strong>Updates System:</strong> Auto-discovers modules from <code>app/updates/</code> directory</li>
+            <li><strong>Priority Override:</strong> Higher priority components replace lower priority ones</li>
+            <li><strong>Async Database:</strong> SQLAlchemy 2.0 with aiosqlite</li>
+            <li><strong>Redis Integration:</strong> Rate limiting and caching support</li>
+            <li><strong>Docker Ready:</strong> Containerized deployment with docker-compose</li>
+        </ul>
+
+        <h2>Technology Stack</h2>
+        <ul>
+            <li>FastAPI - Web framework</li>
+            <li>SQLAlchemy 2.0 - ORM</li>
+            <li>Pluggy - Hook system</li>
+            <li>Redis - Caching and rate limiting</li>
+            <li>Pydantic - Data validation</li>
+            <li>Jinja2 - Template engine</li>
+        </ul>
+
+        <h2>Version</h2>
+        <p>Current version: <strong>{{ settings.app_version }}</strong></p>
+    </div>
+</div>
+{% endblock %}

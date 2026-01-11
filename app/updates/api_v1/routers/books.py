@@ -1,5 +1,5 @@
 """
-Books router for v1.
+Books router for api_v1.
 """
 
 from fastapi import APIRouter, HTTPException, Depends
@@ -14,7 +14,7 @@ from app.common.rate_limiter import (
 )
 
 
-router = APIRouter(prefix="/books", tags=["Books"])
+router = APIRouter(prefix="/api/v1/books", tags=["Books API"])
 
 
 @router.get("", summary="Get all books", dependencies=[Depends(rate_limiter_low_lvl)])

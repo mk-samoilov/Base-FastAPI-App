@@ -5,7 +5,7 @@ Each item (model, schema, service, router) has its own priority.
 Higher priority wins for items with the same name/prefix.
 
 Example:
-    # In update v1
+    # In update api_v1
     return {"BookModel": (1, BookModel)}
 
     # In patch - override BookModel with higher priority

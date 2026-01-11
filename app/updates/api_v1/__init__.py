@@ -1,16 +1,16 @@
 """
-Update v1 - Base implementation.
+Update api_v1 - Base implementation.
 """
 
 from app.core.hooks import hookimpl
 
 
 class UpdatePlugin:
-    """Base update plugin for v1."""
+    """Base update plugin for api_v1."""
 
     @hookimpl
     def register_models(self):
-        """Register v1 database models."""
+        """Register api_v1 database models."""
 
         from .models import BookModel
 
@@ -18,7 +18,7 @@ class UpdatePlugin:
 
     @hookimpl
     def register_schemas(self):
-        """Register v1 Pydantic schemas."""
+        """Register api_v1 Pydantic schemas."""
 
         from .schemas import BookAddSchema, BookSchema
 
@@ -29,7 +29,7 @@ class UpdatePlugin:
 
     @hookimpl
     def register_services(self, session_factory):
-        """Register v1 service functions."""
+        """Register api_v1 service functions."""
 
         from .services import get_all_books, create_book, get_book_by_id
 
@@ -41,7 +41,7 @@ class UpdatePlugin:
 
     @hookimpl
     def register_routers(self):
-        """Register v1 API routers."""
+        """Register api_v1 API routers."""
 
         from .routers import books, admin
 

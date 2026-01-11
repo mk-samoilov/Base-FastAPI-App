@@ -29,6 +29,8 @@ database.db
 # Environment
 .env
 
+# Note: static/ and templates/ are NOT ignored - they need to be copied to container
+
 # Tests
 .pytest_cache/
 .coverage

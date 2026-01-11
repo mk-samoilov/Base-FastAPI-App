@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Books - {{ settings.app_title }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    .books-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .book-form {
+        background: #f5f5f5;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .books-list {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .book-item {
+        background: white;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        transition: box-shadow 0.3s;
+    }
+
+    .book-item:hover {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .book-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .book-author {
+        color: #666;
+    }
+
+    .book-id {
+        font-size: 0.875rem;
+        color: #999;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="books-header">
+    <h1>Books Library</h1>
+</div>
+
+<div class="book-form">
+    <h2>Add New Book</h2>
+    <form id="addBookForm">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        <div class="form-group">
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Book</button>
+    </form>
+</div>
+
+<div class="books-list" id="booksList">
+    {% if books %}
+        {% for book in books %}
+        <div class="book-item">
+            <div class="book-title">{{ book.title }}</div>
+            <div class="book-author">by {{ book.author }}</div>
+            <div class="book-id">ID: {{ book.id }}</div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No books found. Add your first book above!</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+document.getElementById('addBookForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const title = formData.get('title');
+    const author = formData.get('author');
+
+    try {
+        const response = await fetch('/books', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ title, author })
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Failed to add book');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error adding book');
+    }
+});
+</script>
+{% endblock %}

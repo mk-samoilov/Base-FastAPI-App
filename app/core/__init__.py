@@ -4,7 +4,9 @@ FastAPI application with plugin-based updates system.
 
 import logging
 
+from pathlib import Path
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 
@@ -26,13 +28,21 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+# Mount static files
+static_path = Path("static")
+if static_path.exists():
+    app.mount("/static", StaticFiles(directory=str(static_path)), name="static")
+    logger.info(f"Static files mounted at /static from {static_path}")
+else:
+    logger.warning(f"Static directory not found: {static_path}")
 
-@app.get("/", tags=["Root"])
-async def root():
-    """Root endpoint."""
 
-    return {
-        "app": settings.app_title,
-        "version": settings.app_version,
-        "status": "running",
-    }
+#@app.get("/", tags=["Root"])
+#async def root():
+#    """Root endpoint."""
+
+#    return {
+#        "app": settings.app_title,
+#        "version": settings.app_version,
+#        "status": "running",
+#    }

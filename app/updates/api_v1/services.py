@@ -1,5 +1,5 @@
 """
-Service functions for v1.
+Service functions for api_v1.
 """
 
 from sqlalchemy import select

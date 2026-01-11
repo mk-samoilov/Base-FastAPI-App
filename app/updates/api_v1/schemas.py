@@ -1,5 +1,5 @@
 """
-Pydantic schemas for v1.
+Pydantic schemas for api_v1.
 """
 
 from pydantic import BaseModel

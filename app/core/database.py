@@ -81,4 +81,5 @@ def get_session_factory() -> async_sessionmaker[AsyncSession]:
 
     if session_factory is None:
         raise RuntimeError("Database not initialized")
+
     return session_factory

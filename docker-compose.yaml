@@ -27,6 +27,8 @@ services:
       - AUTO_RELOAD=True
     volumes:
       - ./app:/app/app
+      - ./static:/app/static
+      - ./templates:/app/templates
       - ./database.db:/app/database.db
     depends_on:
       redis_container:
