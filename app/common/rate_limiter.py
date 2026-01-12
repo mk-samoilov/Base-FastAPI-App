@@ -91,19 +91,29 @@ def get_rate_limiter() -> RateLimiter:
 
 
 def rate_limiter_factory(
-        endpoint: str,
         max_requests: int,
         window_seconds: int,
+        endpoint: str | None = None,
 ):
+    """
+    Creates dependency to limit frequency of requests.
+
+    Args:
+        max_requests: Max requests count
+        window_seconds: Time window in seconds
+        endpoint: Endpoint name (optionality). If None, using path from request
+    """
     async def dependency(
             request: Request,
             rate_limiter: Annotated[RateLimiter, Depends(get_rate_limiter)],
     ):
         ip_address = request.client.host
 
+        endpoint_key = endpoint if endpoint else request.url.path
+
         limited = await rate_limiter.is_limited_atomically(
             ip_address,
-            endpoint,
+            endpoint_key,
             max_requests,
             window_seconds,
         )
@@ -117,10 +127,28 @@ def rate_limiter_factory(
     return dependency
 
 
-"""
-To use Rate Limiter on endpoint past 'dependencies=[Depends(rate_limit_protected_page)]'
+rate_limiter_low_lvl = rate_limiter_factory(
+    max_requests=10,
+    window_seconds=5,
+)
 
-eg.:
-rate_limit_protected_page = rate_limiter_factory("protected_page", 5, 5)
-app.get("/protected_page", dependencies=[Depends(rate_limit_protected_page)])
+rate_limiter_medium_lvl = rate_limiter_factory(
+    max_requests=5,
+    window_seconds=5,
+)
+
+rate_limiter_high_lvl = rate_limiter_factory(
+    max_requests=1,
+    window_seconds=5,
+)
+
+
+"""
+Usage Rate Limiter on endpoints:
+
+# create limiter
+custom_limiter = rate_limiter_factory(max_requests=10, window_seconds=30)
+
+# announce endpoint
+@router.get("/custom", dependencies=[Depends(custom_limiter)])
 """
