@@ -101,7 +101,7 @@ def rate_limiter_factory(
     ):
         ip_address = request.client.host
 
-        limited = await rate_limiter.is_limited(
+        limited = await rate_limiter.is_limited_atomically(
             ip_address,
             endpoint,
             max_requests,
@@ -111,17 +111,16 @@ def rate_limiter_factory(
         if limited:
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
-                detail="Превышено количество запросов. Повторите позже"
+                detail="Too many requests. Please try again later"
             )
 
     return dependency
 
 
-rate_limit_protected_page = rate_limiter_factory("protected_page", 5, 5)
-
 """
-To use Rate Limiter on endpoint past 'dependencies=[Depends(rate_limit_low_lvl)]'
+To use Rate Limiter on endpoint past 'dependencies=[Depends(rate_limit_protected_page)]'
 
 eg.:
-app.get("/protected_page", dependencies=[Depends(rate_limit_low_lvl)])
+rate_limit_protected_page = rate_limiter_factory("protected_page", 5, 5)
+app.get("/protected_page", dependencies=[Depends(rate_limit_protected_page)])
 """

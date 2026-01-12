@@ -7,7 +7,7 @@ from .updates_engine import initialize_updates
 from .database import init_database, get_session_factory
 from .hooks import registry
 
-from app.common.rate_limiter import get_redis
+from app.common.redis_api import get_redis
 
 
 logger = logging.getLogger(__name__)
