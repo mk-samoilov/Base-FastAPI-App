@@ -1,0 +1,12 @@
+.venv
+venv
+
+__pycache__
+
+.idea
+
+.claude
+.cursor
+CLAUDE.md
+
+database.db
